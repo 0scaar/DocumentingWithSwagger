@@ -76,6 +76,17 @@ namespace Library.API
             services.AddScoped<IAuthorRepository, AuthorRepository>();
 
             services.AddAutoMapper();
+
+            services.AddSwaggerGen(setupAction =>
+            {
+                setupAction.SwaggerDoc(
+                    "LibraryOpenAPISpecification",
+                    new Microsoft.OpenApi.Models.OpenApiInfo()
+                    {
+                        Title = "Library API",
+                        Version = "1"
+                    });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -93,6 +104,8 @@ namespace Library.API
             }
 
             app.UseHttpsRedirection();
+
+            app.UseSwagger();
 
             app.UseStaticFiles();
 
