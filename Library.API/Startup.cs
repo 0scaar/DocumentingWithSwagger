@@ -107,6 +107,14 @@ namespace Library.API
 
             app.UseSwagger();
 
+            app.UseSwaggerUI(setupAction =>
+            {
+                setupAction.SwaggerEndpoint(
+                    "/swagger/LibraryOpenAPISpecification/swagger.json",
+                    "Library API");
+                setupAction.RoutePrefix = "";
+            });
+
             app.UseStaticFiles();
 
             app.UseMvc();
