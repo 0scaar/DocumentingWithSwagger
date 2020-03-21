@@ -11,6 +11,25 @@
             <param name="authorId">The id of the author you want to get</param>
             <returns>An ActionResult of the Author</returns>
         </member>
+        <member name="M:Library.API.Controllers.AuthorsController.UpdateAuthor(System.Guid,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{Library.API.Models.AuthorForUpdate})">
+            <summary>
+            Partially update an author
+            </summary>
+            <param name="authorId">The id of the author you want a get</param>
+            <param name="patchDocument">The set if operations to apply to the author</param>
+            <returns>An ActionResult of type Author</returns>
+            <remarks>
+            Sample request (this request update the author's first name) \
+            PATH /authors/id \
+            [ \
+                { \
+                    "op": "replace", \
+                    "path": "/firstname", \
+                    "value": "new first name" \
+                } \
+            ] \
+            </remarks>
+        </member>
         <member name="T:Library.API.Models.Author">
             <summary>
             An author with Id, FirstName and LastName fields
