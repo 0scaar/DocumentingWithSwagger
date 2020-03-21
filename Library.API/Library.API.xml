@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Library.API</name>
+    </assembly>
+    <members>
+        <member name="M:Library.API.Controllers.AuthorsController.GetAuthor(System.Guid)">
+            <summary>
+            Get an author by his/her id
+            </summary>
+            <param name="authorId">The id of the author you want to get</param>
+            <returns>An ActionResult of the Author</returns>
+        </member>
+    </members>
+</doc>

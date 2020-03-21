@@ -8,7 +8,10 @@ using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 
 namespace Library.API
 {
@@ -86,6 +89,11 @@ namespace Library.API
                         Title = "Library API",
                         Version = "1"
                     });
+
+                var xmlComentsFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlComentsFullPath = Path.Combine(AppContext.BaseDirectory, xmlComentsFile);
+
+                setupAction.IncludeXmlComments(xmlComentsFullPath);
             });
         }
 
