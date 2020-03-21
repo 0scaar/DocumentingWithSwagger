@@ -87,7 +87,19 @@ namespace Library.API
                     new Microsoft.OpenApi.Models.OpenApiInfo()
                     {
                         Title = "Library API",
-                        Version = "1"
+                        Version = "1",
+                        Description = "Through this API you can access authors and their books",
+                        Contact = new Microsoft.OpenApi.Models.OpenApiContact()
+                        {
+                            Email = "oscaar_2003@hotmail.com",
+                            Name = "Oscar C. Loma",
+                            Url = new Uri("https://github.com/0scaar/DocumentingWithSwagger")
+                        },
+                        License = new Microsoft.OpenApi.Models.OpenApiLicense()
+                        {
+                            Name = "MIT License",
+                            Url = new Uri("https://opensource.org/licenses/MIT")
+                        }
                     });
 
                 var xmlComentsFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
