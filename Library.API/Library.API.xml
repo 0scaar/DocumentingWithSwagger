@@ -11,5 +11,25 @@
             <param name="authorId">The id of the author you want to get</param>
             <returns>An ActionResult of the Author</returns>
         </member>
+        <member name="T:Library.API.Models.Author">
+            <summary>
+            An author with Id, FirstName and LastName fields
+            </summary>
+        </member>
+        <member name="P:Library.API.Models.Author.Id">
+            <summary>
+            The id of the author
+            </summary>
+        </member>
+        <member name="P:Library.API.Models.Author.FirstName">
+            <summary>
+            The first name of the author
+            </summary>
+        </member>
+        <member name="P:Library.API.Models.Author.LastName">
+            <summary>
+            The last name on the author
+            </summary>
+        </member>
     </members>
 </doc>
