@@ -10,7 +10,8 @@
     <OutputPath></OutputPath>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <WarningsAsErrors>NU1605;</WarningsAsErrors>
-    <NoWarn>1701;1702</NoWarn>
+    <NoWarn>1701;1702;1591</NoWarn>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
