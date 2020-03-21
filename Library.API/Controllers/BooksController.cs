@@ -28,6 +28,9 @@ namespace Library.API.Controllers
         }
        
         [HttpGet()]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType] // Status code default
         public async Task<ActionResult<IEnumerable<Book>>> GetBooks(
         Guid authorId )
         {
@@ -48,7 +51,6 @@ namespace Library.API.Controllers
         /// <returns>An ActionResult of type Book</returns>
         /// <response code="200">Resturns the request book</response>
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpGet("{bookId}")]
         public async Task<ActionResult<Book>> GetBook(
