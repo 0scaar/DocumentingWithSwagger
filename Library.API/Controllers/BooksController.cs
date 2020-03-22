@@ -72,8 +72,12 @@ namespace Library.API.Controllers
             return Ok(_mapper.Map<Book>(bookFromRepo));
         }
 
-
         [HttpPost()]
+        [Consumes("application/json")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity, 
+            Type = typeof(Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary))]
         public async Task<ActionResult<Book>> CreateBook(
             Guid authorId,
             [FromBody] BookForCreation bookForCreation)
