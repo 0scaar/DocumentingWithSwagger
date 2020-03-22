@@ -110,6 +110,19 @@ namespace Library.API
                         }
                     });
 
+                setupAction.ResolveConflictingActions(apiDescriptions =>
+                {
+                    //var firstDescription = apiDescriptions.First();
+                    //var secondDescription = apiDescriptions.ElementAt(1);
+
+                    //firstDescription.SupportedResponseTypes.AddRange(
+                    //    secondDescription.SupportedResponseTypes.Where(a => a.StatusCode == 200));
+
+                    //return firstDescription;
+
+                    return apiDescriptions.First();
+                });
+
                 var xmlComentsFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlComentsFullPath = Path.Combine(AppContext.BaseDirectory, xmlComentsFile);
 
