@@ -10,7 +10,7 @@ namespace Library.API.Controllers
     [Route("api/[controller]")]
     [ApiController]
     // add of ApiConvention for class controller
-    //[ApiConventionType(typeof(DefaultApiConventions))]
+    [ApiConventionType(typeof(CustomConventions))]
     public class ConventionTestsController : ControllerBase
     {
         // GET: api/ConventionTests
@@ -21,7 +21,7 @@ namespace Library.API.Controllers
         }
 
         // GET: api/ConventionTests/5
-        [HttpGet("{id}", Name = "Get")]]
+        [HttpGet("{id}", Name = "Get")]
         // add of ApiConvention for controller
         //[ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))] 
         public string Get(int id)
@@ -31,7 +31,8 @@ namespace Library.API.Controllers
 
         // POST: api/ConventionTests
         [HttpPost]
-        public void Post([FromBody] string value)
+        //[ApiConventionMethod(typeof(CustomConventions), nameof(CustomConventions.Insert))]
+        public void InsertTest([FromBody] string value)
         {
         }
 
