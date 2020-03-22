@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using Library.API.Attributes;
 using Library.API.Models;
 using Library.API.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Net.Http.Headers;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -54,6 +56,8 @@ namespace Library.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpGet("{bookId}")]
+        [Produces("application/vnd.marvin.book+json")]
+        [RequestHeaderMatchesMediaType(HeaderNames.Accept, "application/json", "application/vnd.marvin.book+json")]
         public async Task<ActionResult<Book>> GetBook(
             Guid authorId,
             Guid bookId)
@@ -70,6 +74,36 @@ namespace Library.API.Controllers
             }
 
             return Ok(_mapper.Map<Book>(bookFromRepo));
+        }
+
+        /// <summary>
+        /// Get a book by if for a specific author
+        /// </summary>
+        /// <param name="authorId">The id of the book author</param>
+        /// <param name="bookId">The id of the book</param>
+        /// <returns>An ActionResult of type Book</returns>
+        /// <response code="200">Resturns the request book</response>
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [HttpGet("{bookId}")]
+        [Produces("application/vnd.marvin.bookwithconcatenatedauthorname+json")]
+        [RequestHeaderMatchesMediaType(HeaderNames.Accept, "application/vnd.marvin.bookwithconcatenatedauthorname+json")]
+        public async Task<ActionResult<BookWithConcatenatedAuthorName>> GetBookWithConcatedAuthorName(
+            Guid authorId,
+            Guid bookId)
+        {
+            if (!await _authorRepository.AuthorExistsAsync(authorId))
+            {
+                return NotFound();
+            }
+
+            var bookFromRepo = await _bookRepository.GetBookAsync(authorId, bookId);
+            if (bookFromRepo == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(_mapper.Map<BookWithConcatenatedAuthorName>(bookFromRepo));
         }
 
         [HttpPost()]
