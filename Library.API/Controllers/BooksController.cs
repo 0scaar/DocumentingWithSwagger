@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Library.API.Controllers
 {
+    [Produces("application/json", "application/xml")]
     [Route("api/authors/{authorId}/books")]
     [ApiController]
     public class BooksController : ControllerBase
