@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Library.API.Contexts;
+using Library.API.OperationFilters;
 using Library.API.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -110,18 +111,7 @@ namespace Library.API
                         }
                     });
 
-                setupAction.ResolveConflictingActions(apiDescriptions =>
-                {
-                    //var firstDescription = apiDescriptions.First();
-                    //var secondDescription = apiDescriptions.ElementAt(1);
-
-                    //firstDescription.SupportedResponseTypes.AddRange(
-                    //    secondDescription.SupportedResponseTypes.Where(a => a.StatusCode == 200));
-
-                    //return firstDescription;
-
-                    return apiDescriptions.First();
-                });
+                setupAction.OperationFilter<GetBookOperationFilter>();
 
                 var xmlComentsFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlComentsFullPath = Path.Combine(AppContext.BaseDirectory, xmlComentsFile);

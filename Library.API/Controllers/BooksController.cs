@@ -88,6 +88,7 @@ namespace Library.API.Controllers
         [HttpGet("{bookId}")]
         [Produces("application/vnd.marvin.bookwithconcatenatedauthorname+json")]
         [RequestHeaderMatchesMediaType(HeaderNames.Accept, "application/vnd.marvin.bookwithconcatenatedauthorname+json")]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ActionResult<BookWithConcatenatedAuthorName>> GetBookWithConcatedAuthorName(
             Guid authorId,
             Guid bookId)
