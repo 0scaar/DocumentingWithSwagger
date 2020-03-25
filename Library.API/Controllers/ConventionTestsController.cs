@@ -7,45 +7,45 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Library.API.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    // add of ApiConvention for class controller
-    [ApiConventionType(typeof(CustomConventions))]
+    //[Route("api/[controller]")]
+    //[ApiController]
+    //// add of ApiConvention for class controller
+    //[ApiConventionType(typeof(CustomConventions))]
     public class ConventionTestsController : ControllerBase
     {
-        // GET: api/ConventionTests
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
+        //// GET: api/ConventionTests
+        //[HttpGet]
+        //public IEnumerable<string> Get()
+        //{
+        //    return new string[] { "value1", "value2" };
+        //}
 
-        // GET: api/ConventionTests/5
-        [HttpGet("{id}", Name = "Get")]
-        // add of ApiConvention for controller
-        //[ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))] 
-        public string Get(int id)
-        {
-            return "value";
-        }
+        //// GET: api/ConventionTests/5
+        //[HttpGet("{id}", Name = "Get")]
+        //// add of ApiConvention for controller
+        ////[ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))] 
+        //public string Get(int id)
+        //{
+        //    return "value";
+        //}
 
-        // POST: api/ConventionTests
-        [HttpPost]
-        //[ApiConventionMethod(typeof(CustomConventions), nameof(CustomConventions.Insert))]
-        public void InsertTest([FromBody] string value)
-        {
-        }
+        //// POST: api/ConventionTests
+        //[HttpPost]
+        ////[ApiConventionMethod(typeof(CustomConventions), nameof(CustomConventions.Insert))]
+        //public void InsertTest([FromBody] string value)
+        //{
+        //}
 
-        // PUT: api/ConventionTests/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
+        //// PUT: api/ConventionTests/5
+        //[HttpPut("{id}")]
+        //public void Put(int id, [FromBody] string value)
+        //{
+        //}
 
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+        //// DELETE: api/ApiWithActions/5
+        //[HttpDelete("{id}")]
+        //public void Delete(int id)
+        //{
+        //}
     }
 }
