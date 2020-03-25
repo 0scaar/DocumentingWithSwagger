@@ -108,7 +108,9 @@ namespace Library.API.Controllers
         }
 
         [HttpPost()]
-        [Consumes("application/json")]
+        [Consumes("application/json", "application/vnd.marvin.bookforcreation+json")]
+        [RequestHeaderMatchesMediaType(HeaderNames.ContentType, 
+            "application/json", "application/vnd.marvin.bookforcreation+json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity, 
@@ -116,6 +118,34 @@ namespace Library.API.Controllers
         public async Task<ActionResult<Book>> CreateBook(
             Guid authorId,
             [FromBody] BookForCreation bookForCreation)
+        {
+            if (!await _authorRepository.AuthorExistsAsync(authorId))
+            {
+                return NotFound();
+            }
+
+            var bookToAdd = _mapper.Map<Entities.Book>(bookForCreation);
+            _bookRepository.AddBook(bookToAdd);
+            await _bookRepository.SaveChangesAsync();
+
+            return CreatedAtRoute(
+                "GetBook",
+                new { authorId, bookId = bookToAdd.Id },
+                _mapper.Map<Book>(bookToAdd));
+        }
+
+        [HttpPost()]
+        [Consumes("application/vnd.marvin.bookforcreationwithamountofpages+json")]
+        [RequestHeaderMatchesMediaType(HeaderNames.ContentType,
+            "application/json", "application/vnd.marvin.bookforcreationwithamountofpages+json")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity,
+            Type = typeof(Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary))]
+        [ApiExplorerSettings(IgnoreApi = true)]
+        public async Task<ActionResult<Book>> CreateBookWithAmountOfPages(
+            Guid authorId,
+            [FromBody] BookForCreationWithAmountOfPages bookForCreation)
         {
             if (!await _authorRepository.AuthorExistsAsync(authorId))
             {

@@ -112,6 +112,7 @@ namespace Library.API
                     });
 
                 setupAction.OperationFilter<GetBookOperationFilter>();
+                setupAction.OperationFilter<CreateBookOperationFilter>();
 
                 var xmlComentsFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlComentsFullPath = Path.Combine(AppContext.BaseDirectory, xmlComentsFile);
