@@ -89,15 +89,22 @@ namespace Library.API
 
             services.AddAutoMapper();
 
+            services.AddApiVersioning(setupAction =>
+            {
+                setupAction.AssumeDefaultVersionWhenUnspecified = true;
+                setupAction.DefaultApiVersion = new ApiVersion(1, 0);
+                setupAction.ReportApiVersions = true;
+            });
+
             services.AddSwaggerGen(setupAction =>
             {
                 setupAction.SwaggerDoc(
-                    "LibraryOpenAPISpecificationAuthors",
+                    "LibraryOpenAPISpecification",
                     new Microsoft.OpenApi.Models.OpenApiInfo()
                     {
-                        Title = "Library API (Authors)",
+                        Title = "Library API",
                         Version = "1",
-                        Description = "Through this API you can access authors",
+                        Description = "Through this API you can access authors and books",
                         Contact = new Microsoft.OpenApi.Models.OpenApiContact()
                         {
                             Email = "oscaar_2003@hotmail.com",
@@ -111,25 +118,45 @@ namespace Library.API
                         }
                     });
 
-                setupAction.SwaggerDoc(
-                    "LibraryOpenAPISpecificationBooks",
-                    new Microsoft.OpenApi.Models.OpenApiInfo()
-                    {
-                        Title = "Library API (Books)",
-                        Version = "1",
-                        Description = "Through this API you can access books",
-                        Contact = new Microsoft.OpenApi.Models.OpenApiContact()
-                        {
-                            Email = "oscaar_2003@hotmail.com",
-                            Name = "Oscar C. Loma",
-                            Url = new Uri("https://github.com/0scaar/DocumentingWithSwagger")
-                        },
-                        License = new Microsoft.OpenApi.Models.OpenApiLicense()
-                        {
-                            Name = "MIT License",
-                            Url = new Uri("https://opensource.org/licenses/MIT")
-                        }
-                    });
+                //setupAction.SwaggerDoc(
+                //    "LibraryOpenAPISpecificationAuthors",
+                //    new Microsoft.OpenApi.Models.OpenApiInfo()
+                //    {
+                //        Title = "Library API (Authors)",
+                //        Version = "1",
+                //        Description = "Through this API you can access authors",
+                //        Contact = new Microsoft.OpenApi.Models.OpenApiContact()
+                //        {
+                //            Email = "oscaar_2003@hotmail.com",
+                //            Name = "Oscar C. Loma",
+                //            Url = new Uri("https://github.com/0scaar/DocumentingWithSwagger")
+                //        },
+                //        License = new Microsoft.OpenApi.Models.OpenApiLicense()
+                //        {
+                //            Name = "MIT License",
+                //            Url = new Uri("https://opensource.org/licenses/MIT")
+                //        }
+                //    });
+
+                //setupAction.SwaggerDoc(
+                //    "LibraryOpenAPISpecificationBooks",
+                //    new Microsoft.OpenApi.Models.OpenApiInfo()
+                //    {
+                //        Title = "Library API (Books)",
+                //        Version = "1",
+                //        Description = "Through this API you can access books",
+                //        Contact = new Microsoft.OpenApi.Models.OpenApiContact()
+                //        {
+                //            Email = "oscaar_2003@hotmail.com",
+                //            Name = "Oscar C. Loma",
+                //            Url = new Uri("https://github.com/0scaar/DocumentingWithSwagger")
+                //        },
+                //        License = new Microsoft.OpenApi.Models.OpenApiLicense()
+                //        {
+                //            Name = "MIT License",
+                //            Url = new Uri("https://opensource.org/licenses/MIT")
+                //        }
+                //    });
 
                 setupAction.OperationFilter<GetBookOperationFilter>();
                 setupAction.OperationFilter<CreateBookOperationFilter>();
@@ -162,11 +189,15 @@ namespace Library.API
             app.UseSwaggerUI(setupAction =>
             {
                 setupAction.SwaggerEndpoint(
-                    "/swagger/LibraryOpenAPISpecificationAuthors/swagger.json",
-                    "Library API (Authors)");
-                setupAction.SwaggerEndpoint(
-                    "/swagger/LibraryOpenAPISpecificationBooks/swagger.json",
-                    "Library API (Books)");
+                    "/swagger/LibraryOpenAPISpecification/swagger.json",
+                    "Library API");
+
+                //setupAction.SwaggerEndpoint(
+                //    "/swagger/LibraryOpenAPISpecificationAuthors/swagger.json",
+                //    "Library API (Authors)");
+                //setupAction.SwaggerEndpoint(
+                //    "/swagger/LibraryOpenAPISpecificationBooks/swagger.json",
+                //    "Library API (Books)");
                 setupAction.RoutePrefix = "";
             });
 
