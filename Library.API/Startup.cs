@@ -6,7 +6,10 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Abstractions;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -89,21 +92,32 @@ namespace Library.API
 
             services.AddAutoMapper();
 
+            services.AddVersionedApiExplorer(setupAction =>
+            {
+                setupAction.GroupNameFormat = "'v'VV";
+            });
+
             services.AddApiVersioning(setupAction =>
             {
                 setupAction.AssumeDefaultVersionWhenUnspecified = true;
                 setupAction.DefaultApiVersion = new ApiVersion(1, 0);
                 setupAction.ReportApiVersions = true;
+                //setupAction.ApiVersionReader = new HeaderApiVersionReader("api-version");
+                //setupAction.ApiVersionReader = new MediaTypeApiVersionReader();
             });
+
+            var apiVersionDescriptionProvider = services.BuildServiceProvider().GetService<IApiVersionDescriptionProvider>();
 
             services.AddSwaggerGen(setupAction =>
             {
-                setupAction.SwaggerDoc(
-                    "LibraryOpenAPISpecification",
+                foreach(var description in apiVersionDescriptionProvider.ApiVersionDescriptions)
+                {
+                    setupAction.SwaggerDoc(
+                    $"LibraryOpenAPISpecification{description.GroupName}",
                     new Microsoft.OpenApi.Models.OpenApiInfo()
                     {
                         Title = "Library API",
-                        Version = "1",
+                        Version = description.ApiVersion.ToString(),
                         Description = "Through this API you can access authors and books",
                         Contact = new Microsoft.OpenApi.Models.OpenApiContact()
                         {
@@ -117,6 +131,9 @@ namespace Library.API
                             Url = new Uri("https://opensource.org/licenses/MIT")
                         }
                     });
+                }
+
+
 
                 //setupAction.SwaggerDoc(
                 //    "LibraryOpenAPISpecificationAuthors",
@@ -158,6 +175,24 @@ namespace Library.API
                 //        }
                 //    });
 
+                setupAction.DocInclusionPredicate((documentName, apiDescription) =>
+                {
+                    var actionApiVerionModel = apiDescription.ActionDescriptor
+                        .GetApiVersionModel(ApiVersionMapping.Explicit | ApiVersionMapping.Implicit);
+
+                    if (actionApiVerionModel == null)
+                        return true;
+
+                    if (actionApiVerionModel.DeclaredApiVersions.Any())
+                    {
+                        return actionApiVerionModel.DeclaredApiVersions.Any(v =>
+                            $"LibraryOpenAPISpecificationv{v.ToString()}" == documentName);
+                    }
+
+                    return actionApiVerionModel.ImplementedApiVersions.Any(v =>
+                        $"LibraryOpenAPISpecificationv{v.ToString()}" == documentName);
+                });
+
                 setupAction.OperationFilter<GetBookOperationFilter>();
                 setupAction.OperationFilter<CreateBookOperationFilter>();
 
@@ -169,7 +204,8 @@ namespace Library.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, 
+            IApiVersionDescriptionProvider apiVersionDescriptionProvider)
         {
             if (env.IsDevelopment())
             {
@@ -188,9 +224,16 @@ namespace Library.API
 
             app.UseSwaggerUI(setupAction =>
             {
-                setupAction.SwaggerEndpoint(
-                    "/swagger/LibraryOpenAPISpecification/swagger.json",
-                    "Library API");
+                foreach(var description in apiVersionDescriptionProvider.ApiVersionDescriptions)
+                {
+                    setupAction.SwaggerEndpoint(
+                    $"/swagger/LibraryOpenAPISpecification{description.GroupName}/swagger.json",
+                    description.GroupName.ToUpperInvariant());
+                }
+
+                //setupAction.SwaggerEndpoint(
+                //    "/swagger/LibraryOpenAPISpecification/swagger.json",
+                //    "Library API");
 
                 //setupAction.SwaggerEndpoint(
                 //    "/swagger/LibraryOpenAPISpecificationAuthors/swagger.json",

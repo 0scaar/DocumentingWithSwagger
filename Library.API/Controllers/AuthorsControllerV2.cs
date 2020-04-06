@@ -11,7 +11,7 @@ namespace Library.API.Controllers
 {
     [Produces("application/json", "application/xml")]
     [ApiController]
-    [Route("api/v2.0/authors")]
+    [Route("api/v{version:apiVersion}/authors")]
     [ApiVersion("2.0")]
     public class AuthorsControllerV2 : ControllerBase
     {

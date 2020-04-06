@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Http;
 namespace Library.API.Controllers
 {
     [Produces("application/json", "application/xml")]
-    [Route("api/v1.0/authors")]
+    [Route("api/v{version:apiVersion}/authors")]
     //[Route("api/authors")]
     //[ApiExplorerSettings(GroupName = "LibraryOpenAPISpecificationAuthors")]
     [ApiController]
