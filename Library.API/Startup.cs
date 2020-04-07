@@ -1,13 +1,16 @@
 ﻿using AutoMapper;
+using Library.API.Authentication;
 using Library.API.Contexts;
 using Library.API.OperationFilters;
 using Library.API.Services;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
@@ -39,6 +42,8 @@ namespace Library.API
                 setupAction.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status400BadRequest));
                 setupAction.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status406NotAcceptable));
                 setupAction.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status500InternalServerError));
+
+                setupAction.Filters.Add(new AuthorizeFilter());
 
                 // for status code 406
                 setupAction.ReturnHttpNotAcceptable = true;
@@ -96,6 +101,9 @@ namespace Library.API
             {
                 setupAction.GroupNameFormat = "'v'VV";
             });
+
+            services.AddAuthentication("Basic")
+                .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("Basic", null);
 
             services.AddApiVersioning(setupAction =>
             {
@@ -245,6 +253,8 @@ namespace Library.API
             });
 
             app.UseStaticFiles();
+
+            app.UseAuthentication();
 
             app.UseMvc();
         }
