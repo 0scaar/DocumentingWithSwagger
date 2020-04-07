@@ -36,7 +36,7 @@ namespace Library.API.Authentication
                 var username = credentials[0];
                 var password = credentials[1];
 
-                if (username == "Oscar123" && password == "oscar123@")
+                if (username == "oscar123" && password == "oscar123@")
                 {
                     var claims = new[]
                     {

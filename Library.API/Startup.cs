@@ -16,7 +16,9 @@ using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -42,6 +44,8 @@ namespace Library.API
                 setupAction.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status400BadRequest));
                 setupAction.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status406NotAcceptable));
                 setupAction.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status500InternalServerError));
+                setupAction.Filters.Add(new ProducesDefaultResponseTypeAttribute());
+                setupAction.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status401Unauthorized));
 
                 setupAction.Filters.Add(new AuthorizeFilter());
 
@@ -141,7 +145,26 @@ namespace Library.API
                     });
                 }
 
+                setupAction.AddSecurityDefinition("basicAuth", new OpenApiSecurityScheme()
+                {
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "basic",
+                    Description = "Input your username and password to access this API"
+                });
 
+                setupAction.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "basicAuth"
+                            }
+                        }, new List<string>()
+                    }
+                });
 
                 //setupAction.SwaggerDoc(
                 //    "LibraryOpenAPISpecificationAuthors",
